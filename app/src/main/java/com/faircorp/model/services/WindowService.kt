@@ -6,7 +6,7 @@ import com.faircorp.model.Dto.WindowDto
 
 class WindowService {
 
-    companion object {
+    /*companion object {
         // Fake windows
         val WINDOWS: List<WindowDto> = listOf(
             WindowDto(1, "Entry Window", RoomService.ROOMS[0], Status.CLOSED),
@@ -23,6 +23,6 @@ class WindowService {
     fun findAll() = WINDOWS.sortedBy { it.name }
 
 
-
+*/
 
 }

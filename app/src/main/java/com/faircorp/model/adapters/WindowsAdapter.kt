@@ -1,11 +1,11 @@
 package com.faircorp.model.adapters
 
-import android.support.v7.widget.RecyclerView
-//import android.support.widget.RecyclerView
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.faircorp.R
 import com.faircorp.model.OnWindowSelectedListener
 import com.faircorp.model.Dto.WindowDto
@@ -38,8 +38,8 @@ class WindowAdapter (val listener: OnWindowSelectedListener): RecyclerView.Adapt
         val window = items[position]
         holder.apply {
             name.text = window.name
-            status.text = window.status.toString()
-            room.text = window.room.name
+            status.text = window.windowStatus.toString()
+            room.text = window.roomName
             itemView.setOnClickListener { listener.onWindowSelected(window.id) } // (1)
         }
     }

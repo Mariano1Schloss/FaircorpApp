@@ -1,9 +1,10 @@
 package com.faircorp.model.services
 
+import com.faircorp.model.Dto.BuildingDto
 import com.faircorp.model.Dto.RoomDto
 
 class RoomService {
-    companion object {
+    /*companion object {
         // Fake rooms
         val ROOMS: List<RoomDto> = listOf(
             RoomDto(1, "Room EF 6.10",BuildingService.BUILDINGS[0], 18.2, 20.0),
@@ -12,7 +13,9 @@ class RoomService {
             RoomDto(4, "Room EF 7.10", BuildingService.BUILDINGS[1],21.2, 20.0)
         )
     }
-    fun findById(id: Long) = ROOMS.firstOrNull { it.id == id}
+    fun findById(id: Long) = ROOMS.firstOrNull() { it.id == id}
 
     fun findAll() = ROOMS.sortedBy { it.name }
+
+    fun findByBuilding(building : BuildingDto) = ROOMS.any { it.building==building }*/
 }

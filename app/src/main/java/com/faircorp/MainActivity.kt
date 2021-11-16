@@ -2,12 +2,20 @@ package com.faircorp
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.faircorp.model.*
 import com.faircorp.model.adapters.BuildingsAdapter
+import com.faircorp.model.adapters.WindowAdapter
+import com.faircorp.model.services.ApiServices
 import com.faircorp.model.services.BuildingService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 const val BUILDING_NAME_PARAM = "com.faircorp.buildingname.attribute"
 const val WINDOW_NAME_PARAM = "com.faircorp.windowname.attribute"
@@ -29,7 +37,7 @@ class MainActivity : BasicActivity() ,OnBuildingSelectedListener {
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
 
-        adapter.update(buildingService.findAll()) // (4)
+        updateRecycler(adapter)
     }
     /*
     /** Called when the user taps the button */
@@ -44,6 +52,28 @@ class MainActivity : BasicActivity() ,OnBuildingSelectedListener {
         startActivity(intent)
     }
     */
+    private fun updateRecycler(adapter: BuildingsAdapter) {
+        lifecycleScope.launch(context = Dispatchers.IO) { // (1)
+            runCatching { ApiServices().buildingsApiService.findAll().execute() } // (2)
+                .onSuccess {
+                    withContext(context = Dispatchers.Main) { // (3)
+                        adapter.update(it.body() ?: emptyList())
+                        println("Buildings found:")
+                        println(it.body())
+                    }
+                }
+                .onFailure {
+                    withContext(context = Dispatchers.Main) { // (3)
+                        Toast.makeText(
+                            applicationContext,
+                            "Error on buildings loading $it",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+        }
+    }
+
     override fun onBuildingSelected(id: Long) {
         val intent = Intent(this, RoomsActivity::class.java).putExtra(BUILDING_NAME_PARAM, id)
         startActivity(intent)
