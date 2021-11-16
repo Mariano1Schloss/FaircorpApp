@@ -19,7 +19,6 @@ import kotlinx.coroutines.withContext
 
 
 class RoomsActivity : BasicActivity(), OnRoomSelectedListener {
-    val roomService = RoomService() // (1)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

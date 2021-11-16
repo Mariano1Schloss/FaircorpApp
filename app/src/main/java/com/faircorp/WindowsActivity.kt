@@ -19,13 +19,15 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 class WindowsActivity : BasicActivity(), OnWindowSelectedListener  {
+    var roomId : Long =0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_windows)
         val windowService = WindowService() // (1)
 
-        val id = intent.getLongExtra(ROOM_NAME_PARAM,0)
+        val id = intent.getLongExtra("roomId",0)
+        roomId=id
         println("id room"+id)
         val recyclerView = findViewById<RecyclerView>(R.id.list_windows) // (2)
         val adapter = WindowAdapter(this) // (3)
@@ -43,7 +45,7 @@ class WindowsActivity : BasicActivity(), OnWindowSelectedListener  {
             val id = intent.getLongExtra(ROOM_NAME_PARAM,0)
             println("id room"+id)
             lifecycleScope.launch(context = Dispatchers.IO) { // (1)
-                runCatching { ApiServices().windowsApiService.findAll().execute() } // (2)
+                runCatching { ApiServices().windowsApiService.findRoomWindows(roomId).execute() } // (2)
                     .onSuccess {
                         withContext(context = Dispatchers.Main) { // (3)
                             adapter.update(it.body() ?: emptyList())

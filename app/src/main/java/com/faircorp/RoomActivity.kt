@@ -18,12 +18,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class RoomActivity : BasicActivity(){
+    var roomId : Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room)
         //we obtain the id of the room selected
         val id = intent.getLongExtra(ROOM_NAME_PARAM,0)
+        roomId=id
         println("room id : "+id)
         lifecycleScope.launch(context = Dispatchers.IO) { // (1)
             runCatching { ApiServices().roomApiService.findById(id).execute()} // (2)
@@ -52,7 +54,7 @@ class RoomActivity : BasicActivity(){
 
     fun openWindow(view: View) {
         //Do something in response to button
-        val intent = Intent(this, WindowsActivity::class.java).putExtra(WINDOW_NAME_PARAM,1)
+        val intent = Intent(this, WindowsActivity::class.java).putExtra("roomId",roomId)
         startActivity(intent)
     }
 }
