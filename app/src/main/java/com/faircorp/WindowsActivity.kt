@@ -65,10 +65,26 @@ class WindowsActivity : BasicActivity(), OnWindowSelectedListener  {
             }
         }
 
-    fun openWindow(id: Long) {
-        //Do something in response to button
-        val intent = Intent(this, WindowActivity::class.java).apply {  }.putExtra(WINDOW_NAME_PARAM,id)
-        startActivity(intent)
+    fun onChangeStatusSelected(view : View){
+        lifecycleScope.launch(context = Dispatchers.IO) { // (1)
+            runCatching { ApiServices().windowsApiService.ChangeRoomWindowsStatus(roomId).execute() } // (2)
+                .onSuccess {
+                    withContext(context = Dispatchers.Main) {
+                        println("status was changed"+it.body())// (3)
+                        finish()
+                        startActivity(getIntent())
+                    }
+                }
+                .onFailure {
+                    withContext(context = Dispatchers.Main) { // (3)
+                        Toast.makeText(
+                            applicationContext,
+                            "Error on changing status",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+        }
     }
 
 

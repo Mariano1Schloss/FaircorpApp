@@ -1,5 +1,6 @@
 package com.faircorp.model.services
 
+import com.faircorp.model.Dto.RoomDto
 import com.faircorp.model.Dto.WindowDto
 import retrofit2.Call
 import retrofit2.http.GET
@@ -17,7 +18,10 @@ interface WindowApiService {
     @GET("rooms/{id}/windows")
     fun findRoomWindows(@Path("id") id: Long): Call<List<WindowDto>>
 
-    @PUT("{id}/switch")
+    @PUT("windows/{id}/switch")
     fun ChangeWindowStatus (@Path("id") id: Long): Call<WindowDto>
+
+    @PUT("rooms/{id}/switchWindow")
+    fun ChangeRoomWindowsStatus(@Path("id")id : Long): Call<RoomDto>
 
 }

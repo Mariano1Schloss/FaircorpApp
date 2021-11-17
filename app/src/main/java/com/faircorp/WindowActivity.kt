@@ -58,6 +58,7 @@ class WindowActivity : BasicActivity(), OnWindowSelectedListener {
         lifecycleScope.launch(context = Dispatchers.IO) { // (1)
             runCatching { ApiServices().windowsApiService.ChangeWindowStatus(windowId).execute(); } // (2)
                 .onSuccess {
+                    println("Status changed on : "+ it.body())
                     withContext(context = Dispatchers.Main) {
                         finish();
                         startActivity(getIntent());
