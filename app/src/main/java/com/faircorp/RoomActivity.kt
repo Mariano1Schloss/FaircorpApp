@@ -36,7 +36,11 @@ class RoomActivity : BasicActivity(){
                         println(it.body())
 
                         if (room != null){
-                            findViewById<TextView>(R.id.textView2).text = room.name
+                            findViewById<TextView>(R.id.txt_room_name).text = room.name
+                            println("temperature"+room.current_temperature)
+                            findViewById<TextView>(R.id.room_curent_temp).text = room.current_temperature.toString()
+                            findViewById<TextView>(R.id.room_target_temp).text = room.target_temperature.toString()
+
                         }
                     }
                 }
